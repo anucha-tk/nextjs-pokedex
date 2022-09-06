@@ -4,6 +4,10 @@ module.exports = {
     dirs: ['src'],
   },
 
+  images: {
+    domains: ['raw.githubusercontent.com'],
+  },
+
   reactStrictMode: true,
 
   // Uncoment to add domain whitelist
