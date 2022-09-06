@@ -34,6 +34,21 @@ type PokeNameApiResponse = {
     front_shiny: string;
     front_shiny_female: string;
   };
+  types: {
+    slot: number;
+    type: {
+      name: string;
+      url: string;
+    };
+  }[];
+  stats: {
+    base_stat: number;
+    effort: number;
+    stat: {
+      name: string;
+      url: string;
+    };
+  }[];
 };
 
 export const pokeApiSlice = createApi({
@@ -43,7 +58,7 @@ export const pokeApiSlice = createApi({
   endpoints: (builder) => ({
     getPokemonNames: builder.query<PokeNameApiResponse[], void>({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        const fetchAllPokemons = await fetchWithBQ(`/pokemon/?limit=5`);
+        const fetchAllPokemons = await fetchWithBQ(`/pokemon/?limit=3`);
         if (fetchAllPokemons.error)
           return { error: fetchAllPokemons.error as FetchBaseQueryError };
 
