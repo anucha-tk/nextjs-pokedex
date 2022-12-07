@@ -55,10 +55,16 @@ export const pokeApiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
   tagTypes: ['Pokemon'],
+  // todo Excessive use of memory and CPU
+  // todo https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/Troubleshooting.md#excessive-use-of-memory-and-cpu
   endpoints: (builder) => ({
-    getPokemonNames: builder.query<PokeNameApiResponse[], void>({
+    getPokemonNames: builder.query<PokeNameApiResponse[], number>({
       async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        const fetchAllPokemons = await fetchWithBQ(`/pokemon/?limit=3`);
+        const limit = 3;
+        const page = limit * _arg;
+        const fetchAllPokemons = await fetchWithBQ(
+          `/pokemon/?limit=3&offset=${page}`
+        );
         if (fetchAllPokemons.error)
           return { error: fetchAllPokemons.error as FetchBaseQueryError };
 

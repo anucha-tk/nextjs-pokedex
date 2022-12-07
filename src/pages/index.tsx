@@ -2,6 +2,7 @@ import Image from 'next/image';
 import * as React from 'react';
 
 import Layout from '@/components/layout/Layout';
+import Paginate from '@/components/paginate/paginate';
 
 import { useGetPokemonNamesQuery } from '@/store/slices/pokemonSlice';
 
@@ -32,24 +33,25 @@ const emoji: { [key: string]: string } = {
 };
 
 export default function HomePage() {
-  const { data: pokemons } = useGetPokemonNamesQuery();
+  const [page, setPage] = React.useState<number>(0);
+  const { data: pokemons } = useGetPokemonNamesQuery(page);
 
   return (
     <Layout>
-      <div className='grid gap-4 grid-rows-3 lg:grid-cols-3 mx-8'>
+      <div className='mx-8 mb-6 grid gap-4 lg:grid-cols-3'>
         {pokemons?.map((pokemon) => {
           const types = pokemon.types.map((e) => e.type.name);
           const states = pokemon.stats.map((e) => e);
           return (
             <div
               key={pokemon.id}
-              className='shadow-md border rounded-lg p-4 hover:bg-gray-100'
+              className='rounded-lg border p-4 shadow-md hover:bg-gray-100'
             >
-              <h5 className='uppercase text-2xl font-bold tracking-tight text-gray-900'>
+              <h5 className='text-2xl font-bold uppercase tracking-tight text-gray-900'>
                 {pokemon.name}
               </h5>
 
-              <div className='flex flex-col sm:flex-row justify-center items-center'>
+              <div className='flex flex-col items-center justify-center sm:flex-row'>
                 <Image
                   src={pokemon.sprites.front_default}
                   alt='pokemon'
@@ -91,6 +93,9 @@ export default function HomePage() {
             </div>
           );
         })}
+      </div>
+      <div className='flex justify-center'>
+        <Paginate page={page} setPage={setPage} />
       </div>
     </Layout>
   );

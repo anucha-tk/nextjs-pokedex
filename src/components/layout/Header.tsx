@@ -10,7 +10,7 @@ const links = [
 
 export default function Header() {
   return (
-    <header className='sticky top-0 z-50 bg-white mb-4 py-2'>
+    <header className='sticky top-0 z-50 mb-4 bg-white py-2'>
       <div className='layout flex h-14 items-center justify-between'>
         <div className='flex items-center'>
           <Image
@@ -23,7 +23,7 @@ export default function Header() {
             href='/'
             className='flex justify-center font-bold hover:text-gray-600'
           >
-            <div className='ml-4'>Pokemon</div>
+            <div className='ml-4'>Pokedex</div>
           </UnstyledLink>
         </div>
         <nav>
