@@ -15,12 +15,12 @@ this project is create from nextjs + tailwind css and PokeApi.co
 - [Tech stack](#tech-stack)
 - [Table of contents](#table-of-contents)
 - [Features and Tactical](#features-and-tactical)
-  - [Custom Redux toolkit RTK Query](#custom-redux-toolkit-rtk-query)
-  - [Paginate](#paginate)
+  - [Custom Redux toolkit RTK Query and Paginate](#custom-redux-toolkit-rtk-query-and-paginate)
+- [Roadmap](#roadmap)
 
 # Features and Tactical
 
-## Custom Redux toolkit RTK Query
+## Custom Redux toolkit RTK Query and Paginate
 
 **Problem:** when we get [https://pokeapi.co/api/v2/pokemon/](https://pokeapi.co/api/v2/pokemon/) image by pokemon id not found,
 
@@ -84,27 +84,35 @@ this project is create from nextjs + tailwind css and PokeApi.co
 
 ```typescript
 // store/slices/pokemonSlice.ts
-getPokemonNames: builder.query<PokeNameApiResponse[], void>({
-      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-        const fetchAllPokemons = await fetchWithBQ(`/pokemon/?limit=3`); // <-- 👈 query 1st
-        if (fetchAllPokemons.error)
-          return { error: fetchAllPokemons.error as FetchBaseQueryError };
+getPokemonNames: builder.query<PokeNameApiResponse[], number>({
+  async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
+    const limit = 3;
+    const page = limit * _arg;
+    const fetchAllPokemons = await fetchWithBQ(
+      `/pokemon/?limit=3&offset=${page}`
+    );
+    if (fetchAllPokemons.error)
+      return { error: fetchAllPokemons.error as FetchBaseQueryError };
 
-        const res = fetchAllPokemons.data as PokeApiResponse;
-        const pokemonNames = res.results.map((e) => e.name);
+    const res = fetchAllPokemons.data as PokeApiResponse;
+    const pokemonNames = res.results.map((e) => e.name);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const pokemons: any = await Promise.all(
-          pokemonNames.map(async (e) => {
-            const res = await fetchWithBQ(`/pokemon/${e}`);// <-- 👈 query 2nd
-            return res.data;
-          })
-        );
-        return pokemons
-          ? { data: pokemons as PokeNameApiResponse[] }
-          : { error: pokemons.error as FetchBaseQueryError };
-      },
-    }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pokemons: any = await Promise.all(
+      pokemonNames.map(async (e) => {
+        const res = await fetchWithBQ(`/pokemon/${e}`);
+        return res.data;
+      })
+    );
+    return pokemons
+      ? { data: pokemons as PokeNameApiResponse[] }
+      : { error: pokemons.error as FetchBaseQueryError };
+  },
+}),
 ```
 
-## Paginate
+# Roadmap
+
+- [x] State management with Redux toolkit RTK
+- [x] Pagination
+- [ ] Single pokemon character
