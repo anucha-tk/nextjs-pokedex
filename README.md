@@ -16,6 +16,7 @@ this project is create from nextjs + tailwind css and PokeApi.co
 - [Table of contents](#table-of-contents)
 - [Features and Tactical](#features-and-tactical)
   - [Custom Redux toolkit RTK Query and Paginate](#custom-redux-toolkit-rtk-query-and-paginate)
+  - [LoadJSON file](#loadjson-file)
 - [Roadmap](#roadmap)
 
 # Features and Tactical
@@ -111,8 +112,29 @@ getPokemonNames: builder.query<PokeNameApiResponse[], number>({
 }),
 ```
 
+### LoadJSON file
+
+```typescript
+// api/staticdata.ts
+import { promises as fs } from 'fs';
+import { NextApiRequest, NextApiResponse } from 'next';
+import path from 'path';
+
+export default async function handler(
+  _req: NextApiRequest,
+  res: NextApiResponse
+) {
+  //Find the absolute path of the json directory
+  const jsonDirectory = path.join(process.cwd(), 'data');
+  //Read the json data file data.json
+  const fileContents = await fs.readFile(jsonDirectory + '/en.json', 'utf8');
+  //Return the content of the data file in json format
+  res.status(200).json(fileContents);
+}
+```
+
 # Roadmap
 
 - [x] State management with Redux toolkit RTK
 - [x] Pagination
-- [ ] Single pokemon character
+- [x] Single pokemon character

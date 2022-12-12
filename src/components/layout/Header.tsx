@@ -4,13 +4,13 @@ import * as React from 'react';
 import UnstyledLink from '@/components/links/UnstyledLink';
 
 const links = [
-  { href: '/route', label: 'Route 1' },
-  { href: '/', label: 'Route 2' },
+  { href: '/', label: 'All Pokemons' },
+  { href: '/pokemon', label: 'Find Pokemon' },
 ];
 
 export default function Header() {
   return (
-    <header className='sticky top-0 z-50 mb-4 bg-white py-2'>
+    <header className='sticky top-0 z-50 mb-4 bg-slate-200 py-2 shadow-lg'>
       <div className='layout flex h-14 items-center justify-between'>
         <div className='flex items-center'>
           <Image

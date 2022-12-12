@@ -16,7 +16,7 @@ type PokeApiResponse = {
   results: Pokemon[];
 };
 
-type PokeNameApiResponse = {
+export type PokeNameApiResponse = {
   id: number;
   name: string;
   base_experience: number;
@@ -55,6 +55,7 @@ export const pokeApiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
   tagTypes: ['Pokemon'],
+
   // todo Excessive use of memory and CPU
   // todo https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/Troubleshooting.md#excessive-use-of-memory-and-cpu
   endpoints: (builder) => ({
@@ -83,7 +84,10 @@ export const pokeApiSlice = createApi({
           : { error: pokemons.error as FetchBaseQueryError };
       },
     }),
+    getPokemon: builder.query<PokeNameApiResponse, string>({
+      query: (name) => `/pokemon/${name}`,
+    }),
   }),
 });
 
-export const { useGetPokemonNamesQuery } = pokeApiSlice;
+export const { useGetPokemonNamesQuery, useGetPokemonQuery } = pokeApiSlice;
