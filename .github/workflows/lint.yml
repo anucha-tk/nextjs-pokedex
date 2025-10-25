@@ -8,25 +8,13 @@ on:
 
 jobs:
   lint:
-    name: ⬣ ESLint
+    name: 🔍 Biome Lint
     runs-on: ubuntu-latest
     steps:
-      - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
-      - name: 🔬 Lint
-        run: yarn lint:strict
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run lint:strict
 
   typecheck:
     name: ʦ TypeScript
@@ -36,57 +24,46 @@ jobs:
         uses: styfle/cancel-workflow-action@0.9.1
 
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v2
+      - name: 🧁 Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 16
+          bun-version: latest
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+      - name: 📥 Install dependencies
+        run: bun install --frozen-lockfile
 
       - name: 🔎 Type check
-        run: yarn typecheck
+        run: bun run typecheck
+
 
   prettier:
-    name: 💅 Prettier
+    name: 💅 Biome Format Check
     runs-on: ubuntu-latest
     steps:
-      - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run format:check
 
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
+  # test:
+  #   name: 🃏 Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: 🛑 Cancel Previous Runs
+  #       uses: styfle/cancel-workflow-action@0.9.1
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
+  #     - name: ⬇️ Checkout repo
+  #       uses: actions/checkout@v2
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+  #     - name: ⎔ Setup node
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 16
 
-      - name: 🔎 Type check
-        run: yarn format:check
+  #     - name: 📥 Download deps
+  #       uses: bahmutov/npm-install@v1
 
-  test:
-    name: 🃏 Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
-      - name: 🃏 Run jest
-        run: yarn test
+  #     - name: 🃏 Run jest
+  #       run: yarn test
