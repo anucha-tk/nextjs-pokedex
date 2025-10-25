@@ -9,6 +9,7 @@ const links = [
 
 const a = 0;
 a = "a";
+a = 0;
 
 export default function Header() {
 	return (
