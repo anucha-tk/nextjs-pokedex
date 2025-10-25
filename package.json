@@ -16,7 +16,8 @@
 		"format:check": "prettier -c .",
 		"postbuild": "next-sitemap --config next-sitemap.config.js",
 		"prepare": "husky install",
-		"check": "biome check src --write"
+		"check": "biome check src --write",
+		"cz": "cz"
 	},
 	"dependencies": {
 		"@headlessui/react": "^1.7.5",
