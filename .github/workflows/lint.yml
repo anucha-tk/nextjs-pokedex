@@ -1,42 +1,48 @@
 name: Code Check
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request: {}
 
 jobs:
-  biome:
-    name: 🌿 Biome Check
+  check:
+    name: 🔍 Type + Format Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🧁 Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
-      - name: 📦 Install deps
-        run: bun install
-      - name: 🔍 Run Biome
+          bun-version: latest
+
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: ʦ TypeScript Check
+        run: bun run typecheck
+
+      - name: 💅 Biome Format Check
         run: bunx biome check --no-errors-on-unmatched --files-ignore-unknown=true
 
-  typecheck:
-    name: ʦ TypeScript
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: bun install
-      - run: bun run typecheck
-
   test:
-    name: 🃏 Test
+    name: 🃏 Jest Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🧁 Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
-      - run: bun install
-      - run: bun test
+          bun-version: latest
+
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: 🃏 Run Jest
+        run: bun test
