@@ -7,10 +7,6 @@ const links = [
 	{ href: "/pokemon", label: "Find Pokemon" },
 ];
 
-const a = 0;
-a = "a";
-a = 0;
-
 export default function Header() {
 	return (
 		<header className="sticky top-0 z-50 mb-4 bg-slate-200 py-2 shadow-lg">
