@@ -1,7 +1,5 @@
-import * as React from 'react';
-
-import Layout from '@/components/layout/Layout';
-import Pokemons from '@/components/Pokemons';
+import Layout from "@/components/layout/Layout";
+import Pokemons from "@/components/Pokemons";
 
 /**
  * SVGR Support
@@ -16,9 +14,9 @@ import Pokemons from '@/components/Pokemons';
 // to customize the default configuration.
 
 export default function HomePage() {
-  return (
-    <Layout>
-      <Pokemons />
-    </Layout>
-  );
+	return (
+		<Layout>
+			<Pokemons />
+		</Layout>
+	);
 }
